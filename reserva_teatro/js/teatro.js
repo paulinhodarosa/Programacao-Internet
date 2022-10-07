@@ -47,3 +47,38 @@ window.addEventListener("load", () => {
             (i % 24 == 0) && dvPalco.appendChild(document.createElement("br"))
     }
 })
+
+frm.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    //obtem o conteudo input
+    const poltrona = Number(frm.inPoltrona.value);
+
+    //valida o preenchimento da entrada
+    if (poltrona > POLTRONAS) {
+        alert("informa um numero de poltrona que seja valido")
+        frm.inPoltrona.focus();
+        return
+    }
+
+    const ocupadas = localStorage.getItem("teatroOcupadas")
+    ? localStorage.getItem("teatroOcupadas").split(";")
+    : []
+
+    //validar se esta ocupada
+    if (ocupadas.includes(poltrona.toString())){
+        alert(`A poltrona ${poltrona} já está ocupada`)
+        frm.inPoltrona.value = ""
+        frm.inPoltrona.focus()
+        return
+    } 
+    //captura a imagem da poltrona, filha de divPalco
+    const imgPoltrona = dvPalco.querySelector("img")[poltrona -1]
+
+    imgPoltrona.src = "img/reservada.jpg" //modifica o atributo da imagem
+
+    reservadas.push(poltrona) //adc a poltrona ao vetor
+
+    frm.inPoltrona.value = ""
+    frm.inPoltrona.focus()
+})
