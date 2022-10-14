@@ -111,15 +111,17 @@ frm.btConfirmar.addEventListener("click", () => {
     localStorage.setItem("teatroOcupadas", ocupadas.join(";"));
 })
 
-frm.addEventListener("submit", (e) =>{
+frm.btRetirar.addEventListener("click", (e) =>{
     e.preventDefault();
 
     //obtem o conteúdo do input
     const poltrona = Number(frm.inPoltrona.value);
 
     const ocupadas = localStorage.getItem("teatroOcupadas")
-    ? localStorage.getItem("teatroOcupadas").split(";")
-    : [];
+    // ? localStorage.getItem("teatroOcupadas").split(";")
+    // : [];
+
+    
 
     //validar se a poltrona ja estiver ocupada
     if(ocupadas.includes(poltrona.toString())){
@@ -129,12 +131,19 @@ frm.addEventListener("submit", (e) =>{
         return;
     }
 
-    //capturar a imagem da poltrona, filha de divPalco.
+    
+
+    reservadas.indexOf(poltrona); //remove a poltrona do vetor
+
     const imgPoltrona = dvPalco.querySelectorAll("img")[poltrona -1]
 
     imgPoltrona.src = "img/disponivel.jpg"; //modifica o atributo da img
 
-    reservadas.pop(poltrona); //remove a poltrona do vetor
+    //capturar a imagem da poltrona, filha de divPalco.
+
+
+    // imgPoltrona.src = "img/disponivel.jpg"; //modifica o atributo da img
+    // reservadas.indexOf(poltrona); //remove a poltrona do vetor
 
     frm.inPoltrona.value = "";
     frm.inPoltrona.focus();
