@@ -117,35 +117,56 @@ frm.btRetirar.addEventListener("click", (e) =>{
     //obtem o conteúdo do input
     const poltrona = Number(frm.inPoltrona.value);
 
-    const ocupadas = localStorage.getItem("teatroOcupadas")
+    
     // ? localStorage.getItem("teatroOcupadas").split(";")
     // : [];
 
-    
 
-    //validar se a poltrona ja estiver ocupada
-    if(ocupadas.includes(poltrona.toString())){
-        alert(`Deseja cancelar a reserva da ${poltrona}? `)
+    if(poltrona > POLTRONAS){
+        alert("Informe um número de poltronas válido!");
         frm.inPoltrona.value = "";
         frm.inPoltrona.focus();
         return;
     }
+    
+    const ocupadas = localStorage.getItem("teatroOcupadas")
+    ? localStorage.getItem("teatroOcupadas").split(";")
+    : [];
+
+    //validar se a poltrona ja estiver ocupada
+    if(ocupadas.includes(poltrona.toString())){
+        alert(`essa poltrona está reservada, deseja cancelar a reserva da Poltrona ${poltrona}?`)
+        frm.inPoltrona.value = "";
+        frm.inPoltrona.focus();
+      
+  
+
+        //capturar a imagem da poltrona, filha de divPalco.
+        // const imgPoltrona = dvPalco.querySelectorAll("img")[ocupadas -1]
+
+        // imgPoltrona.src = "img/disponivel.jpg"; //modifica o atributo da img
+
+          //for decrescente, pois as reservas vão sendo removidas a cada alteração de imagem
+          for (let i = ocupadas.length - 1; i>=0; i--){
+            // ocupadas.pop(ocupadas[i]);
+
+            //captura a imagem da poltrona, filha de divPalco. É -1 pois começa com 0
+            const imgPoltrona = dvPalco.querySelectorAll("img")[ocupadas[i] - 1];
+            imgPoltrona.src = "img/disponivel.jpg" //modifica a imagem
+
+            localStorage.setItem(reservadas.indexOf(ocupadas), 1) //remove do vetor a reserva ja alterada
+        }
+
+        // reservadas.splice(reservadas.indexOf(ocupadas), 1); //remove a poltrona do vetor
+        // console.log(ocupadas)
+        // ocupadas = localStorage.removeItem(poltrona)
+        return;
+    }
 
     
-
-    reservadas.indexOf(poltrona); //remove a poltrona do vetor
-
-    const imgPoltrona = dvPalco.querySelectorAll("img")[poltrona -1]
-
-    imgPoltrona.src = "img/disponivel.jpg"; //modifica o atributo da img
-
-    //capturar a imagem da poltrona, filha de divPalco.
-
-
-    // imgPoltrona.src = "img/disponivel.jpg"; //modifica o atributo da img
-    // reservadas.indexOf(poltrona); //remove a poltrona do vetor
+    
 
     frm.inPoltrona.value = "";
     frm.inPoltrona.focus();
-
+    
 });
